@@ -6,3 +6,4 @@ resources:
   - redis.yaml
   - kafka.yaml
   - loki.yaml
+  - prometheus.yaml
