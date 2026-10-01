@@ -1,0 +1,7 @@
+**
+!shared/
+!shared/methodingress-controller/
+!shared/methodingress-controller/**
+!shared/logging/
+!shared/logging/**
+**/bin/

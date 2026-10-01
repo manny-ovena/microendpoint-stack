@@ -26,7 +26,17 @@ All manifests, controllers, and workloads rely exclusively on:
 - upstream ingress controllers (NGINX)  
 - upstream storage interfaces (CSI)  
 
-No vendor‑specific APIs are used.
+No vendor‑specific APIs are used. `MethodIngress` is an application-specific
+extension, not a Kubernetes upstream API; its CRD is installed from
+`/k8s/base/crd.yaml` and is available in each environment where the base
+manifests are applied.
+
+`MethodIngress` describes HTTP method/path/backend rules for a standard
+Ingress. The controller translates those rules into ingress-nginx server
+snippets; this requires the same compatible ingress controller and snippet
+policy in each environment. See the
+[controller documentation](../shared/methodingress-controller/README.md) for
+the schema and current behavior.
 
 This ensures:
 

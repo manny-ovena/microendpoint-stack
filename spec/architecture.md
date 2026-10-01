@@ -20,6 +20,18 @@ The architecture is intentionally simple, explicit, and easy to reason about.
 
 ## Components
 
+### MethodIngress Custom Resource
+
+The Kubernetes deployment includes a project-defined, namespaced
+`MethodIngress` CRD (`networking.microendpoints.ovena.io/v1alpha1`). A resource
+references a standard Ingress by name and describes path, HTTP method, and
+backend Service name/port rules. The CRD schema and example are documented in
+[`shared/methodingress-controller`](../shared/methodingress-controller/README.md).
+
+The controller generates ingress-nginx server snippets to route exact paths
+by HTTP method, allowing different services to share a path. See the controller
+README for ingress prerequisites, supported backends, and limitations.
+
 ### Micro‑Endpoints
 
 Micro‑endpoints are tiny HTTP services built with:

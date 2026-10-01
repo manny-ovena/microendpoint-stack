@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: methodingress-controller
+  namespace: methodingress-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: methodingress-controller
+  template:
+    metadata:
+      labels:
+        app: methodingress-controller
+    spec:
+      serviceAccountName: methodingress-controller
+      containers:
+      - name: manager
+        image: ghcr.io/manny-ovena/methodingress-controller:latest
+        imagePullPolicy: Always
+        command: ["/manager"]

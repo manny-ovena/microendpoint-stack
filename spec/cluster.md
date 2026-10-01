@@ -21,6 +21,20 @@ Differences between environments are limited to **infrastructure**, not **applic
 
 ## Cluster Components
 
+### MethodIngress Custom Resource
+
+The base Kubernetes resources install the namespaced
+`MethodIngress` CRD (`networking.microendpoints.ovena.io/v1alpha1`) and the
+controller's RBAC and deployment. It associates HTTP method/path rules and
+backend Service references with a standard Kubernetes Ingress. Each
+`MethodIngress` refers to an Ingress in its own namespace.
+
+The controller generates method-aware ingress-nginx server snippets on the
+referenced Ingress. The ingress controller must be installed and explicitly
+configured to permit these snippets.
+See [`shared/methodingress-controller`](../shared/methodingress-controller/README.md)
+for the resource schema, example, and implementation status.
+
 ### Control Plane
 
 All environments include:

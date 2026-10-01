@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  namespace: default
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: hello-service
+      port:
+        number: 80
+---
+apiVersion: networking.microendpoints.ovena.io/v1alpha1
+kind: MethodIngress
+metadata:
+  name: example
+  namespace: default
+spec:
+  ingressRef: my-ingress
+  rules:
+  - path: /hello
+    method: GET
+    backend:
+      serviceName: hello-service
+      servicePort: 80
+  - path: /hello
+    method: POST
+    backend:
+      serviceName: hello-writer
+      servicePort: 8080
