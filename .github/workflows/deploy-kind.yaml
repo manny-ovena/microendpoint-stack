@@ -1,0 +1,23 @@
+name: Deploy to kind (apply only)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-kind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kind
+        run: |
+          curl -fsSLo "$RUNNER_TEMP/kind" https://kind.sigs.k8s.io/dl/v0.30.0/kind-linux-amd64
+          chmod +x "$RUNNER_TEMP/kind"
+          sudo mv "$RUNNER_TEMP/kind" /usr/local/bin/kind
+      - uses: azure/setup-kubectl@v4
+        with:
+          version: v1.34.0
+      - name: Apply full kind overlay
+        run: make deploy-kind

@@ -20,9 +20,8 @@ profile.cov
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-# Go workspace file
-go.work
-go.work.sum
+# Built controller binary
+/shared/methodingress-controller/bin/
 
 # env file
 .env

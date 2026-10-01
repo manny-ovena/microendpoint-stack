@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: shared/methodingress-controller/go.mod
+          cache-dependency-path: shared/methodingress-controller/go.sum
+      - name: Build controller and Docker image
+        run: make build
