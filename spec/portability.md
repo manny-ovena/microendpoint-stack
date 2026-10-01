@@ -21,10 +21,11 @@ Portability is achieved through strict adherence to **upstream Kubernetes APIs**
 
 All manifests, controllers, and workloads rely exclusively on:
 
-- upstream Kubernetes APIs  
-- upstream CRDs (KEDA)  
-- upstream ingress controllers (NGINX)  
-- upstream storage interfaces (CSI)  
+- upstream Kubernetes APIs
+- upstream CRDs (KEDA)
+- the project-defined `MethodIngress` CRD
+- upstream ingress controllers (NGINX)
+- upstream storage interfaces (CSI)
 
 No vendor‑specific APIs are used. `MethodIngress` is an application-specific
 extension, not a Kubernetes upstream API; its CRD is installed from
