@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-adjust
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-adjust
+  template:
+    metadata:
+      labels:
+        app: inventory-adjust
+    spec:
+      containers:
+      - name: inventory-adjust
+        image: ghcr.io/manny-ovena/inventory-adjust:latest
+        envFrom:
+        - configMapRef:
+            name: inventory-adjust-config
+        ports:
+        - name: http
+          containerPort: 8080

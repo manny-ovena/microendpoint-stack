@@ -1,0 +1,10 @@
+**
+!shared/
+!shared/logging/
+!shared/logging/**
+!services/
+!services/endpoints/
+!services/endpoints/inventory.adjust/
+!services/endpoints/inventory.adjust/**
+**/bin/
+**/.gitkeep
