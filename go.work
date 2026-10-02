@@ -1,7 +1,7 @@
 go 1.27.0
 
 use ./shared/methodingress-controller
-// use ./shared/logging
+use ./shared/logging
 // use ./services/endpoints/inventory.adjust
 // use ./services/endpoints/users.get
 // use ./services/endpoints/orders.create
