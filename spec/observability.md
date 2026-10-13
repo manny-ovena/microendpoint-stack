@@ -32,8 +32,8 @@ Below are the **metric dimensions and descriptions**, organized by service type.
 | http_request_latency_ms    | Total HTTP request latency in ms          | service_name: endpoint-*; http_method: GET/POST/PUT/DELETE; http_path: normalized path; status_code: 200/400/401/403/404/409/500; rpc_target: sql/redis/ipc |
 | http_requests_total        | Total number of HTTP requests             | service_name: endpoint-*; http_method: GET/POST/PUT/DELETE; http_path: normalized path       |
 | http_errors_total          | Total number of HTTP errors               | service_name: endpoint-*; error_type: json_decode/rpc_error/sql_error/redis_error/ipc_error; rpc_target: sql/redis/ipc |
-| endpoint_cpu_seconds_total | CPU usage                                 | service_name: endpoint-*; node_name: k8s node name                                           |
-| endpoint_memory_bytes      | Memory usage                              | service_name: endpoint-*; node_name: k8s node name                                           |
+| endpoint_cpu_seconds_total | CPU usage                                 | service_name: endpoint-*; pod_name: k8s pod name                                             |
+| endpoint_memory_bytes      | Memory usage                              | service_name: endpoint-*; pod_name: k8s pod name                                             |
 
 ## Subscriber Metrics
 
