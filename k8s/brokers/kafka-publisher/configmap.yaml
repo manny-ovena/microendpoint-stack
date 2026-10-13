@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-publisher-config
+  namespace: app
+data:
+  KAFKA_PUBLISHER_ADDR: ":9000"
+  KAFKA_BROKERS: "kafka.database.svc.cluster.local:9092"

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-publisher
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-publisher
+  template:
+    metadata:
+      labels:
+        app: kafka-publisher
+    spec:
+      containers:
+        - name: kafka-publisher
+          image: ghcr.io/manny-ovena/kafka-publisher:local
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: rpc
+              containerPort: 9000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: kafka-publisher-config
+          readinessProbe:
+            tcpSocket:
+              port: rpc
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: rpc
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532

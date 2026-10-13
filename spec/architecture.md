@@ -71,6 +71,13 @@ Brokers centralize:
 - metrics  
 - logging  
 
+### Kafka Publishing Broker
+
+An application-facing RPC service publishes messages to the Kafka cluster.
+It centralizes reusable Kafka producer connections so endpoint replicas do
+not each open producer connections. Bound its replica count independently of
+endpoint scaling to control Kafka-facing connections.
+
 ### Shared Libraries
 
 - DataClient (msgpack RPC client + routing)
@@ -160,6 +167,10 @@ HTTP → JSON → simdjson → RPC (msgpack) → Broker → Datastore
 ### Subscriber Flow
 
 Kafka → event → simdjson → RPC (msgpack) → Broker → Datastore
+
+### Kafka Publishing Flow
+
+Endpoint/subscriber → RPC (msgpack) → Kafka Publishing Broker → Kafka
 
 ### Broker Flow
 

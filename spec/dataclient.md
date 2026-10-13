@@ -2,7 +2,10 @@
 
 ## Overview
 
-The DataClient is the unified RPC client used by endpoints and subscribers to communicate with the SQL, Redis, and IPC brokers.
+The DataClient is the unified RPC client used by endpoints and subscribers to
+communicate with the SQL and Redis brokers and the Kafka Publishing Broker.
+IPC methods are deferred until a concrete, portable filesystem use case is
+established.
 
 It provides:
 
@@ -75,19 +78,20 @@ Only broker endpoints differ by environment.
 - redis_command: GET / SET / INCR / DECR / HGET / HSET
 - error_type: null / redis_error / rpc_error
 
-### IPC Broker Methods
+### Kafka Publishing Broker Methods
 
 | Method Name | Description |
 |-------------|-------------|
-| FileRead    | Read file contents |
-| FileWrite   | Write file contents |
-| FileDelete  | Delete file |
-| FileList    | List directory contents |
+| Publish     | Publish a message to Kafka through the publishing broker |
 
 #### Allowed Values
 
-- ipc_operation: read / write / delete / list
-- error_type: null / ipc_error / rpc_error
+- error_type: null / kafka_error / rpc_error
+
+The publishing broker centralizes Kafka-facing producer connections. Endpoint
+replicas call the broker over RPC, while the broker reuses long-lived producer
+clients and has a bounded replica count. This keeps Kafka-facing connection
+growth independent of endpoint replica growth.
 
 ## Error Semantics
 
@@ -102,13 +106,13 @@ error: "<string|null>"
 | rpc_error    | Transport or protocol failure |
 | sql_error    | SQL broker returned error |
 | redis_error  | Redis broker returned error |
-| ipc_error    | IPC broker returned error |
+| kafka_error  | Kafka publishing broker returned error |
 | timeout      | RPC timeout exceeded |
 | backpressure | RPC queue depth exceeded threshold |
 
 #### Allowed Values
 
-- error_type: rpc_error / sql_error / redis_error / ipc_error / timeout / backpressure
+- error_type: rpc_error / sql_error / redis_error / kafka_error / timeout / backpressure
 - error_message: free‑form string
 
 ## Retry & Backoff
@@ -135,7 +139,7 @@ The DataClient implements:
 
 | Metric Name     | Description | Dimensions (Allowed Values) |
 |-----------------|-------------|------------------------------|
-| rpc_latency_ms  | RPC latency | service_name: endpoint-*/ subscriber-*; rpc_method: InsertUser/InsertOrder/UpdateInventory/GetUser/GetOrder/GetInventory/CacheGet/CacheSet/CacheIncr/CacheDecr/CacheHashGet/CacheHashSet/FileRead/FileWrite/FileDelete/FileList; error_type: null/rpc_error/sql_error/redis_error/ipc_error |
+| rpc_latency_ms  | RPC latency | service_name: endpoint-*/ subscriber-*; rpc_method: InsertUser/InsertOrder/UpdateInventory/GetUser/GetOrder/GetInventory/CacheGet/CacheSet/CacheIncr/CacheDecr/CacheHashGet/CacheHashSet/Publish; error_type: null/rpc_error/sql_error/redis_error/kafka_error |
 | rpc_queue_depth | Queue depth | service_name: endpoint-*/ subscriber-* |
 
 ## Logging
@@ -144,9 +148,9 @@ The DataClient implements:
 
 | Field              | Description | Allowed Values |
 |--------------------|-------------|----------------|
-| rpc_method         | RPC method name | InsertUser / InsertOrder / UpdateInventory / GetUser / GetOrder / GetInventory / CacheGet / CacheSet / CacheIncr / CacheDecr / CacheHashGet / CacheHashSet / FileRead / FileWrite / FileDelete / FileList |
+| rpc_method         | RPC method name | InsertUser / InsertOrder / UpdateInventory / GetUser / GetOrder / GetInventory / CacheGet / CacheSet / CacheIncr / CacheDecr / CacheHashGet / CacheHashSet / Publish |
 | rpc_latency_ms     | RPC latency | integer |
-| rpc_error          | RPC error | null / rpc_error / sql_error / redis_error / ipc_error |
+| rpc_error          | RPC error | null / rpc_error / sql_error / redis_error / kafka_error |
 | queue_depth        | RPC queue depth | integer |
 | backpressure_active| Backpressure flag | true / false |
 | trace_id           | Trace ID | UUID |
@@ -160,6 +164,10 @@ The DataClient maintains:
 - connection pooling
 - automatic reconnect
 - health checks
+
+The Kafka Publishing Broker maintains reusable producer connections. Its
+replica count should be bounded to control Kafka-facing connections
+independently of endpoint replica count.
 
 ### Allowed Values
 
@@ -192,3 +200,8 @@ Only broker endpoints differ:
 | kind | broker-sql.kind.svc.cluster.local:9000 |
 | on‑prem | broker-sql.onprem.svc.cluster.local:9000 |
 | cloud | broker-sql.cloud.svc.cluster.local:9000 |
+
+The Kafka publishing endpoint is configured separately using
+`KAFKA_PUBLISHER_BROKER_ADDR`. The scaffold does not prescribe its port or
+deploy a service endpoint yet. SQL and Redis endpoints use `SQL_BROKER_ADDR`
+and `REDIS_BROKER_ADDR`, respectively.

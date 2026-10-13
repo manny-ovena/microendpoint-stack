@@ -42,7 +42,7 @@ spec:
         - name: KAFKA_CONTROLLER_LISTENER_NAMES
           value: "CONTROLLER"
         - name: KAFKA_ADVERTISED_LISTENERS
-          value: "PLAINTEXT://kafka-0.kafka.database.svc.cluster.local:9092"
+          value: "PLAINTEXT://kafka.database.svc.cluster.local:9092"
         - name: KAFKA_CONTROLLER_QUORUM_VOTERS
           value: "1@127.0.0.1:9093"
         - name: KAFKA_LOG_DIRS

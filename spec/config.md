@@ -180,6 +180,8 @@ This ensures:
 | SQL_DSN | Postgres DSN |
 | REDIS_ADDR | Redis address |
 | IPC_BASE_PATH | Filesystem base path |
+| KAFKA_BROKERS | Comma-separated Kafka bootstrap addresses for subscribers and the publishing broker |
+| KAFKA_PUBLISHER_ADDR | TCP listen address for the Kafka publishing broker (default `:9000`) |
 
 ---
 

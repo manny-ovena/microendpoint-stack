@@ -8,5 +8,6 @@ resources:
   - postgresql.yaml
   - redis.yaml
   - kafka.yaml
+  - ../brokers/kafka-publisher
   - loki.yaml
   - prometheus.yaml
