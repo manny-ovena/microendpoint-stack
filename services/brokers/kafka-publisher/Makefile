@@ -1,6 +1,9 @@
 IMAGE ?= ghcr.io/manny-ovena/kafka-publisher:local
 
-.PHONY: build test vet image
+.PHONY: tidy build test vet image
+
+tidy:
+	go mod tidy
 
 build:
 	GOWORK=off go build ./...
