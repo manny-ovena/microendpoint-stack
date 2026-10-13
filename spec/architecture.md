@@ -81,6 +81,7 @@ endpoint scaling to control Kafka-facing connections.
 ### Shared Libraries
 
 - DataClient (msgpack RPC client + routing)
+- RPC transport (TCP connection lifecycle + MessagePack request/response framing)
 - logging (zerolog setup)
 - metrics (Prometheus registry)
 - config (env + defaults)

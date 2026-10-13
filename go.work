@@ -3,6 +3,7 @@ go 1.27.0
 use ./shared/methodingress-controller
 use ./shared/logging
 use ./shared/metrics
+use ./shared/rpc
 // use ./shared/dataclient
 // use ./services/endpoints/inventory.adjust
 // use ./services/endpoints/users.get
